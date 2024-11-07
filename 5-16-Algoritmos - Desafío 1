@@ -1,0 +1,49 @@
+from collections import deque
+class Nodo:
+    def __init__(self, grado, estudiantes):
+        self.grado = grado  # Nivel o grado del nodo
+        self.estudiantes = estudiantes  # Lista de estudiantes en este grado
+        self.hijos = []  # Lista de nodos hijos (grados inferiores)
+
+    def agregar_hijo(self, hijo):
+        self.hijos.append(hijo)
+
+def recorrido_por_niveles(raiz):
+    if not raiz:
+        return
+
+    cola = deque([raiz])  # Cola para realizar el recorrido por niveles
+    resultado = []  # Para almacenar la lista de estudiantes por cada grado
+
+    while cola:
+        nodo_actual = cola.popleft()
+        
+        # Guardar el grado y sus estudiantes en el resultado
+        resultado.append((nodo_actual.grado, nodo_actual.estudiantes))
+        
+        # Añadir los hijos del nodo actual a la cola
+        for hijo in nodo_actual.hijos:
+            cola.append(hijo)
+
+    return resultado
+
+# Ejemplo de uso
+# Crear nodos (grados) con estudiantes
+grado_12 = Nodo("Grado 12", ["Juan", "Ana"])
+grado_11 = Nodo("Grado 11", ["Luis", "Pedro"])
+grado_10 = Nodo("Grado 10", ["María", "José"])
+grado_9 = Nodo("Grado 9", ["Carlos", "Sofía"])
+
+# Construir el árbol
+grado_12.agregar_hijo(grado_11)
+grado_11.agregar_hijo(grado_10)
+grado_10.agregar_hijo(grado_9)
+
+# Realizar el recorrido por niveles y mostrar el resultado
+resultado = recorrido_por_niveles(grado_12)
+for grado, estudiantes in resultado:
+    print(f"{grado}: {', '.join(estudiantes)}")
+
+
+
+
